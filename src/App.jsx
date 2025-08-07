@@ -5,6 +5,8 @@ import EditLocation from "./pages/EditLocation";
 import CreateOrderList from "./pages/CreateOrderList";
 import EditOrderList from "./pages/EditOrderList";
 import Header from "./components/Header";
+import NewOrder from "./pages/NewOrder";
+import OrderSummary from "./pages/OrderSummary";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             element={<CreateOrderList />}
           />
           <Route path="/edit-order/:orderId" element={<EditOrderList />} />
+          <Route path="/new-order" element={<NewOrder />} />
+          <Route path="/order-summary" element={<OrderSummary />} />
         </Routes>
       </main>
     </Router>

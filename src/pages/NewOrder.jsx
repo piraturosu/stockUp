@@ -1,20 +1,45 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { dummySuppliers } from "../data/dummyData";
-
-// Simulated flat order list from CreateOrderList, ordered by shelf order
-const dummyOrderItems = Array.from({ length: 25 }).map((_, i) => ({
-  id: i + 1,
-  name: `Item ${i + 1}`,
-  supplier: dummySuppliers[i % dummySuppliers.length],
-  quantity: "",
-}));
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import { initialData, springMenuOrderList } from "../data/dummyData";
 
 const NewOrder = () => {
   const [page, setPage] = useState(0);
-  const [items, setItems] = useState(dummyOrderItems);
+  const [items, setItems] = useState([]);
+  const [locationName, setLocationName] = useState("Main Kitchen");
   const navigate = useNavigate();
+  const location = useLocation();
+  const [appData] = useLocalStorage("appData", initialData);
   const itemsPerPage = 10;
+
+  useEffect(() => {
+    const listId = location.state?.listId;
+    let selectedItems = springMenuOrderList;
+    let newLocationName = "Main Kitchen";
+
+    if (listId) {
+      const foundLocation = appData.locations.find((loc) =>
+        loc.orderLists.some((l) => l.id === listId),
+      );
+      if (foundLocation) {
+        newLocationName = foundLocation.name;
+        const selectedList = foundLocation.orderLists.find(
+          (l) => l.id === listId,
+        );
+        if (selectedList && selectedList.items.length > 0) {
+          selectedItems = selectedList.items;
+        }
+      }
+    }
+
+    setItems(
+      selectedItems.map((item) => ({
+        ...item,
+        quantity: "",
+      })),
+    );
+    setLocationName(newLocationName);
+  }, [location.state, appData]);
 
   const handleChangeQuantity = (index, value) => {
     const updated = [...items];
@@ -30,8 +55,8 @@ const NewOrder = () => {
     if (page > 0) setPage(page - 1);
   };
 
-  const handleFinish = () => {
-    navigate("/order-summary", { state: { items } });
+  const handleSeeSummary = () => {
+    navigate(`/order-summary/temp`, { state: { items, locationName } });
   };
 
   const pageItems = items.slice(
@@ -41,7 +66,7 @@ const NewOrder = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-4">
-      <h2 className="text-2xl font-bold">New Order for Main Kitchen</h2>
+      <h2 className="text-2xl font-bold">New Order for {locationName}</h2>
 
       {pageItems.map((item, idx) => (
         <div
@@ -78,10 +103,10 @@ const NewOrder = () => {
           Next
         </button>
         <button
-          onClick={handleFinish}
+          onClick={handleSeeSummary}
           className="px-4 py-2 bg-blue-600 text-white rounded"
         >
-          Finish Order
+          See Order Summary
         </button>
       </div>
     </div>

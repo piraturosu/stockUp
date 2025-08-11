@@ -23,7 +23,8 @@ function App() {
           />
           <Route path="/edit-order/:orderId" element={<EditOrderList />} />
           <Route path="/new-order" element={<NewOrder />} />
-          <Route path="/order-summary" element={<OrderSummary />} />
+          <Route path="/order-summary/:orderId" element={<OrderSummary />} />
+          <Route path="/previous-orders/:orderId" element={<OrderSummary />} />
         </Routes>
       </main>
     </Router>

@@ -68,9 +68,18 @@ const CreateOrderList = () => {
     const newOrderList = {
       id: newListId,
       name: listName || `Order List ${newListId}`,
-      items: Object.values(orderList)
-        .flatMap((shelves) => Object.values(shelves))
-        .flat(),
+      items: Object.entries(orderList).flatMap(([areaIdx, shelves]) =>
+        Object.entries(shelves).flatMap(([shelfIdx, products]) =>
+          products
+            .filter((p) => (p.name || "").trim() !== "")
+            .map((p) => ({
+              ...p,
+              quantity: p.quantity ?? "",
+              areaIndex: Number(areaIdx),
+              shelfIndex: Number(shelfIdx),
+            })),
+        ),
+      ),
     };
 
     const updatedLocations = appData.locations.map((loc) =>

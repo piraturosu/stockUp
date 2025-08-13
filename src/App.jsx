@@ -21,7 +21,7 @@ function App() {
             path="/create-order/:locationId"
             element={<CreateOrderList />}
           />
-          <Route path="/edit-order/:orderId" element={<EditOrderList />} />
+          <Route path="/edit-order/:listId" element={<EditOrderList />} />
           <Route path="/new-order" element={<NewOrder />} />
           <Route path="/order-summary/:orderId" element={<OrderSummary />} />
           <Route path="/previous-orders/:orderId" element={<OrderSummary />} />

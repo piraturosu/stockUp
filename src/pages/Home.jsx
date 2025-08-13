@@ -87,7 +87,7 @@ const Home = () => {
               onClick={() => navigate(`/create-order/${selectedLocation.id}`)}
               className="w-full px-4 py-2 bg-green-600 text-white rounded"
             >
-              Create New Order List
+              Create New Stock List
             </button>
           </div>
         </div>

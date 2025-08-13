@@ -76,7 +76,7 @@ const Home = () => {
                       onClick={() => navigate(`/edit-order/${list.id}`)}
                       className="px-4 py-2 bg-yellow-500 text-white rounded"
                     >
-                      Edit Order List
+                      Edit Stock List
                     </button>
                   </div>
                 )}

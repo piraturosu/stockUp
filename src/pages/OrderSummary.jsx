@@ -44,7 +44,6 @@ const OrderSummary = () => {
 
   const handleFinish = () => {
     if (orderId === "temp") {
-      // Save the new order to localStorage
       let newOrderId = 1;
       if (appData.previousOrders.length > 0) {
         const maxId = Math.max(
@@ -54,7 +53,7 @@ const OrderSummary = () => {
       }
 
       const newOrder = {
-        id: newOrderId.toString(),
+        id: newOrderId,
         location: locationName,
         date: new Date().toLocaleDateString(),
         items: items.map((item) => ({
@@ -99,13 +98,12 @@ const OrderSummary = () => {
       )}
 
       {orderId === "temp" && (
-
         <button
-        onClick={handleFinish}
-        className="bg-blue-600 text-white px-4 py-2 rounded ml-2"
+          onClick={handleFinish}
+          className="bg-blue-600 text-white px-4 py-2 rounded ml-2"
         >
-        Finish Order
-      </button>
+          Finish Order
+        </button>
       )}
 
       <button

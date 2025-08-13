@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { initialData, springMenuOrderList } from "../data/dummyData";
+import { initialData } from "../data/dummyData";
 
 const NewOrder = () => {
   const [page, setPage] = useState(0);
   const [items, setItems] = useState([]);
-  const [locationName, setLocationName] = useState("Main Kitchen");
+  const [locationName, setLocationName] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const [appData] = useLocalStorage("appData", initialData);
@@ -14,21 +14,25 @@ const NewOrder = () => {
 
   useEffect(() => {
     const listId = location.state?.listId;
-    let selectedItems = springMenuOrderList;
-    let newLocationName = "Main Kitchen";
+    if (!listId) {
+      console.warn("No listId provided to NewOrder");
+      return;
+    }
 
-    if (listId) {
-      const foundLocation = appData.locations.find((loc) =>
-        loc.orderLists.some((l) => l.id === listId),
+    let selectedItems = [];
+    let newLocationName = "";
+
+    const foundLocation = appData.locations.find((loc) =>
+      loc.orderLists.some((l) => l.id.toString() === listId.toString()),
+    );
+
+    if (foundLocation) {
+      newLocationName = foundLocation.name;
+      const selectedList = foundLocation.orderLists.find(
+        (l) => l.id.toString() === listId.toString(),
       );
-      if (foundLocation) {
-        newLocationName = foundLocation.name;
-        const selectedList = foundLocation.orderLists.find(
-          (l) => l.id === listId,
-        );
-        if (selectedList && selectedList.items.length > 0) {
-          selectedItems = selectedList.items;
-        }
+      if (selectedList && selectedList.items.length > 0) {
+        selectedItems = selectedList.items;
       }
     }
 
@@ -56,7 +60,9 @@ const NewOrder = () => {
   };
 
   const handleSeeSummary = () => {
-    navigate(`/order-summary/temp`, { state: { items, locationName } });
+    navigate(`/order-summary/temp`, {
+      state: { items, locationName, listId: location.state?.listId },
+    });
   };
 
   const pageItems = items.slice(

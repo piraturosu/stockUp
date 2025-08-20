@@ -45,6 +45,10 @@ const NewOrder = () => {
     setLocationName(newLocationName);
   }, [location.state, appData]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [page]);
+
   const handleChangeQuantity = (index, value) => {
     const updated = [...items];
     updated[page * itemsPerPage + index].quantity = value;
@@ -71,9 +75,7 @@ const NewOrder = () => {
   );
 
   return (
-    <div className="max-w-2xl mx-auto space-y-4">
-      <h2 className="text-2xl font-bold">New Order for {locationName}</h2>
-
+    <div className="max-w-2xl mx-auto space-y-1">
       {pageItems.map((item, idx) => (
         <div
           key={item.id}

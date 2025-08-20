@@ -105,13 +105,6 @@ const OrderSummary = () => {
           Finish Order
         </button>
       )}
-
-      <button
-        onClick={() => navigate("/")}
-        className="bg-gray-600 text-white px-4 py-2 rounded ml-2"
-      >
-        Home
-      </button>
     </div>
   );
 };

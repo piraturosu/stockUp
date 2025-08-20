@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { initialData } from "../data/dummyData";
@@ -6,89 +6,103 @@ import { initialData } from "../data/dummyData";
 const Home = () => {
   const navigate = useNavigate();
   const [appData, setAppData] = useLocalStorage("appData", initialData);
-  const [selectedLocationId, setSelectedLocationId] = useState(null);
-  const [expandedOrderListId, setExpandedOrderListId] = useState(null);
+
+  const [selectedLocationId, setSelectedLocationId] = useState(
+    appData.locations[0]?.id || null,
+  );
+  const [selectedListId, setSelectedListId] = useState(null);
 
   const selectedLocation = appData.locations.find(
     (loc) => loc.id === selectedLocationId,
   );
+  const selectedList = selectedLocation?.orderLists.find(
+    (list) => list.id === selectedListId,
+  );
+
+  useEffect(() => {
+    if (selectedLocation) {
+      const latest = [...selectedLocation.orderLists].sort(
+        (a, b) => b.id - a.id,
+      )[0];
+      setSelectedListId(latest?.id || null);
+    }
+  }, [selectedLocation]);
+
   const handleReset = () => {
     setAppData(initialData);
-    setSelectedLocationId(null);
-    setExpandedOrderListId(null);
+    setSelectedLocationId(initialData.locations[0]?.id || null);
+    setSelectedListId(null);
   };
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-xl font-bold">
-        Hello {appData.user.name}, please choose one of your locations where you
-        would like to order to
+      <h1 className="text-xl font-bold text-center">
+        Choose a location to order
       </h1>
 
-      <div className="space-y-2">
-        {appData.locations.map((location) => (
-          <button
-            key={location.id}
-            onClick={() => {
-              setSelectedLocationId(location.id);
-              setExpandedOrderListId(null);
-            }}
-            className="block w-full text-left px-4 py-2 bg-gray-100 rounded hover:bg-gray-200"
-          >
-            {location.name}
-          </button>
-        ))}
+      <div>
+        <select
+          value={selectedLocationId ?? ""}
+          onChange={(e) => setSelectedLocationId(Number(e.target.value))}
+          className="w-full px-4 py-3  rounded-full shadow-md shadow-black/30
+               bg-white appearance-none focus:outline-none focus:ring-2
+               focus:ring-blue-500 text-gray-800"
+        >
+          {appData.locations.map((location) => (
+            <option
+              key={location.id}
+              value={location.id}
+              className="text-center"
+            >
+              {location.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       {selectedLocation && (
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Order Lists</h3>
-          <div className="space-y-2">
+        <div>
+          <select
+            value={selectedListId ?? ""}
+            onChange={(e) => setSelectedListId(Number(e.target.value))}
+            className="w-full px-4 py-3  rounded-full shadow-md shadow-black/30
+               bg-white appearance-none focus:outline-none focus:ring-2
+               focus:ring-blue-500 text-gray-800"
+          >
             {selectedLocation.orderLists.map((list) => (
-              <div key={list.id}>
-                <button
-                  onClick={() =>
-                    setExpandedOrderListId(
-                      expandedOrderListId === list.id ? null : list.id,
-                    )
-                  }
-                  className="w-full px-4 py-2 bg-blue-500 text-white rounded"
-                >
-                  {list.name}
-                </button>
-
-                {expandedOrderListId === list.id && (
-                  <div className="flex flex-col sm:flex-row gap-2 mt-2">
-                    <button
-                      onClick={() =>
-                        navigate("/new-order", { state: { listId: list.id } })
-                      }
-                      className="px-4 py-2 bg-green-500 text-white rounded"
-                    >
-                      Start Order
-                    </button>
-                    <button
-                      onClick={() => alert("Stocktake feature coming soon!")}
-                      className="px-4 py-2 bg-purple-500 text-white rounded"
-                    >
-                      Start Stocktake
-                    </button>
-                    <button
-                      onClick={() => navigate(`/edit-order/${list.id}`)}
-                      className="px-4 py-2 bg-yellow-500 text-white rounded"
-                    >
-                      Edit Stock List
-                    </button>
-                  </div>
-                )}
-              </div>
+              <option key={list.id} value={list.id} className="text-center">
+                {list.name}
+              </option>
             ))}
+          </select>
+        </div>
+      )}
 
+      {selectedList && (
+        <div className="text-center space-y-6 mt-6">
+          {/* <h3 className="text-lg font-semibold">
+            Current List: {selectedList.name}
+          </h3> */}
+
+          <div className="flex flex-row justify-evenly gap-4">
             <button
-              onClick={() => navigate(`/create-order/${selectedLocation.id}`)}
-              className="w-full px-4 py-2 bg-green-600 text-white rounded"
+              onClick={() =>
+                navigate("/new-order", { state: { listId: selectedList.id } })
+              }
+              className="w-32 h-32 px-8 py-3 bg-green-500 text-white rounded-full text-lg
+             shadow-lg shadow-black/50 hover:scale-105
+             transition-transform duration-200"
             >
-              Create New Stock List
+              New Order
             </button>
+            {/* <button
+              onClick={() => alert("Stocktake feature coming soon!")}
+              className="w-32 h-32 px-8 py-3 bg-purple-500 text-white rounded-full text-lg
+             shadow-lg shadow-black/50 hover:scale-105
+             transition-transform duration-200"
+            >
+              Stocktake
+            </button> */}
           </div>
         </div>
       )}

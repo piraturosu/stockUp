@@ -72,10 +72,13 @@ const OrderSummary = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <h2 className="text-2xl font-bold mb-4">{orderTitle}</h2>
+      <h2 className="text-xl font-bold mb-4 text-center">{orderTitle}</h2>
 
       {Object.entries(grouped).map(([supplier, items]) => (
-        <div key={supplier} className="border rounded p-4">
+        <div
+          key={supplier}
+          className="border border-[#e6eef2] bg-[#f7fbf9] rounded p-4"
+        >
           <h3 className="font-semibold text-lg mb-2">{supplier}</h3>
           <ul className="space-y-1">
             {items.map((item, idx) => (
@@ -89,21 +92,21 @@ const OrderSummary = () => {
       ))}
 
       {orderId === "temp" && (
-        <button
-          onClick={handleModify}
-          className="bg-yellow-500 text-white px-4 py-2 rounded"
-        >
-          Modify Order
-        </button>
-      )}
+        <div className="max-w-2xl flex justify-center">
+          <button
+            onClick={handleModify}
+            className="bg-yellow-500 text-white font-bold px-4 py-2 rounded"
+          >
+            Modify Order
+          </button>
 
-      {orderId === "temp" && (
-        <button
-          onClick={handleFinish}
-          className="bg-blue-600 text-white px-4 py-2 rounded ml-2"
-        >
-          Finish Order
-        </button>
+          <button
+            onClick={handleFinish}
+            className="bg-[#2dd4bf] text-white font-bold px-4 py-2 rounded ml-2"
+          >
+            Finish Order
+          </button>
+        </div>
       )}
     </div>
   );

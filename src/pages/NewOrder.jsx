@@ -31,17 +31,18 @@ const NewOrder = () => {
       const selectedList = foundLocation.orderLists.find(
         (l) => l.id.toString() === listId.toString(),
       );
-      if (selectedList && selectedList.items.length > 0) {
-        selectedItems = selectedList.items;
+
+      if (location.state?.items && location.state.items.length > 0) {
+        selectedItems = location.state.items;
+      } else if (selectedList && selectedList.items.length > 0) {
+        selectedItems = selectedList.items.map((item) => ({
+          ...item,
+          quantity: "",
+        }));
       }
     }
 
-    setItems(
-      selectedItems.map((item) => ({
-        ...item,
-        quantity: "",
-      })),
-    );
+    setItems(selectedItems);
     setLocationName(newLocationName);
   }, [location.state, appData]);
 
@@ -112,9 +113,9 @@ const NewOrder = () => {
         </button>
         <button
           onClick={handleSeeSummary}
-          className="px-4 py-2 bg-blue-600 text-white rounded"
+          className="px-4 py-2 bg-[#2dd4bf] text-white rounded"
         >
-          See Order Summary
+          Order Summary
         </button>
       </div>
     </div>

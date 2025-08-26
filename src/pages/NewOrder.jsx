@@ -113,7 +113,7 @@ const NewOrder = () => {
         </button>
         <button
           onClick={handleSeeSummary}
-          className="px-4 py-2 bg-[#2dd4bf] text-white rounded"
+          className="px-4 py-2 bg-primary text-white rounded"
         >
           Order Summary
         </button>

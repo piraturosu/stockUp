@@ -77,7 +77,7 @@ const OrderSummary = () => {
       {Object.entries(grouped).map(([supplier, items]) => (
         <div
           key={supplier}
-          className="border border-[#e6eef2] bg-[#f7fbf9] rounded p-4"
+          className="border border-border bg-background rounded p-4"
         >
           <h3 className="font-semibold text-lg mb-2">{supplier}</h3>
           <ul className="space-y-1">
@@ -95,14 +95,14 @@ const OrderSummary = () => {
         <div className="max-w-2xl flex justify-center">
           <button
             onClick={handleModify}
-            className="bg-yellow-500 text-white font-bold px-4 py-2 rounded"
+            className="bg-warning text-white font-bold px-4 py-2 rounded"
           >
             Modify Order
           </button>
 
           <button
             onClick={handleFinish}
-            className="bg-[#2dd4bf] text-white font-bold px-4 py-2 rounded ml-2"
+            className="bg-success text-white font-bold px-4 py-2 rounded ml-2"
           >
             Finish Order
           </button>

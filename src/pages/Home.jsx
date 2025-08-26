@@ -42,7 +42,7 @@ const Home = () => {
           <p className="text-lg">Choose a location to start</p>
         </div>
 
-        <div className="rounded-2xl p-6 shadow-lg border border-[#e6eef2]">
+        <div className="rounded-2xl p-6 shadow-lg border border-border">
           <label className="block text-sm font-semibold mb-3">
             Select Location
           </label>
@@ -50,14 +50,14 @@ const Home = () => {
             <select
               value={selectedLocationId ?? ""}
               onChange={(e) => setSelectedLocationId(Number(e.target.value))}
-              className="w-full px-6 py-4 rounded-xl bg-[#f7fbf9] border-2 border-[#e6eef2] appearance-none focus:outline-none focus:border-[#e6eef2] text-lg font-medium shadow-sm
+              className="w-full px-6 py-4 rounded-xl bg-background border-2 border-border appearance-none focus:outline-none focus:border-border text-lg font-medium shadow-sm
                        hover:border-primary/50 transition-colors"
             >
               {appData.locations.map((location) => (
                 <option
                   key={location.id}
                   value={location.id}
-                  className="bg-[#f7fbf9]"
+                  className="bg-background"
                 >
                   📍 {location.name}
                 </option>
@@ -82,7 +82,7 @@ const Home = () => {
         </div>
 
         {/* {selectedLocation && (
-          <div className="bg-card rounded-2xl p-6 shadow-lg border border-[#e6eef2]">
+          <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
             <label className="block text-sm font-semibold text-card-foreground mb-3">
               Select Stock List
             </label>
@@ -90,7 +90,7 @@ const Home = () => {
               <select
                 value={selectedListId ?? ""}
                 onChange={(e) => setSelectedListId(Number(e.target.value))}
-                className="w-full px-6 py-4 rounded-xl bg-background border-2 border-[#e6eef2]
+                className="w-full px-6 py-4 rounded-xl bg-background border-2 border-border
                          appearance-none focus:outline-none focus:border-primary
                          text-foreground text-lg font-medium shadow-sm
                          hover:border-primary/50 transition-colors"
@@ -125,7 +125,7 @@ const Home = () => {
         )} */}
 
         {selectedList && (
-          <div className="rounded-2xl p-8 shadow-lg border border-[#e6eef2]">
+          <div className="rounded-2xl p-8 shadow-lg border border-border">
             <div className="text-center space-y-6">
               <div className="space-y-2">
                 <h3 className="text-xl font-bold">Ready to Order</h3>
@@ -143,11 +143,10 @@ const Home = () => {
                     })
                   }
                   className="group relative w-40 h-40 rounded-full text-xl font-bold
-                           shadow-xl hover:scale-105
-                           transition-all duration-300 ease-out bg-[#ccefeb]
-                           border-3"
+                           shadow-xl hover:scale-105 transition-all duration-300 ease-out bg-primary hover:bg-primary/60
+                           border-4 border-black"
                 >
-                  <div className="relative flex flex-col items-center justify-center space-y-2 border-[#e6eef2]">
+                  <div className="relative flex flex-col items-center justify-center space-y-2 border-border">
                     <svg
                       className="w-8 h-8"
                       fill="none"
@@ -169,7 +168,7 @@ const Home = () => {
           </div>
         )}
 
-        <div className="bg-card rounded-2xl p-6 shadow-lg border border-[#e6eef2]">
+        <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-xl font-bold flex items-center gap-2">
               <svg
@@ -195,8 +194,8 @@ const Home = () => {
                 <button
                   key={order.id}
                   onClick={() => navigate(`/previous-orders/${order.id}`)}
-                  className="w-full px-4 py-3 bg-[#f7fbf9] hover:bg-white rounded-xl
-                           text-left transition-colors duration-200 border border-[#e6eef2]"
+                  className="w-full px-4 py-3 bg-background hover:bg-white rounded-xl
+                           text-left transition-colors duration-200 border border-border"
                 >
                   <div className="flex items-center justify-between">
                     <div className="space-y-1">
@@ -239,10 +238,10 @@ const Home = () => {
             )}
           </div>
 
-          <div className="mt-6 pt-4 border-t border-[#e6eef2]">
+          <div className="mt-6 pt-4 border-t border-border">
             <button
               onClick={handleReset}
-              className="w-full px-4 py-3 bg-[#ff8c8c] hover:bg-[#f7fbf9] text-destructive rounded-xl font-medium transition-colors duration-200 border border-[#fa3838]"
+              className="w-full text-white px-4 py-3 bg-destructive hover:bg-background hover:text-destructive  rounded-xl font-medium transition-colors duration-200 border border-border"
             >
               🔄 Reset to Initial Data
             </button>

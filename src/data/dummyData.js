@@ -1,8 +1,13 @@
 import { springMenuItems } from "./springMenuData";
 
 export const initialData = {
-  user: { name: "David Mousselini" },
-  suppliers: ["Bidfood", "Brakes", "Fresh Direct"],
+  user: { name: "Gordon Ramsay" },
+  suppliers: [
+    "Bidfood",
+    "Heart of England Butchers",
+    "M & J Seafood",
+    "Total Produce",
+  ],
   locations: [
     {
       id: 1,

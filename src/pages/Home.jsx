@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { initialData } from "../data/dummyData";
+import { useEffect } from "react";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -16,6 +17,10 @@ const Home = () => {
   const handleReset = () => {
     setAppData(initialData);
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
   return (
     <div className="min-h-screen p-4">

@@ -18,7 +18,7 @@ function App() {
     <Router>
       <Header />
       <main className="p-4">
-        <Routes>/
+        <Routes>
           {/* Public pages */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />

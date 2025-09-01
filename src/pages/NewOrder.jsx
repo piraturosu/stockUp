@@ -77,6 +77,9 @@ const NewOrder = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-1">
+      <h1 className="text-2xl font-bold text-center">
+        Ordering for {locationName}
+      </h1>
       {pageItems.map((item, idx) => (
         <div
           key={item.id}

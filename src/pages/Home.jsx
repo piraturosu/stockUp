@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { initialData } from "../data/dummyData";
@@ -7,130 +6,49 @@ const Home = () => {
   const navigate = useNavigate();
   const [appData, setAppData] = useLocalStorage("appData", initialData);
 
-  const [selectedLocationId, setSelectedLocationId] = useState(
-    appData.locations[0]?.id || null,
-  );
-  const [selectedListId, setSelectedListId] = useState(null);
-
   const selectedLocation = appData.locations.find(
-    (loc) => loc.id === selectedLocationId,
+    (loc) => loc.id === appData.defaultLocationId,
   );
   const selectedList = selectedLocation?.orderLists.find(
-    (list) => list.id === selectedListId,
+    (list) => list.id === appData.defaultListId,
   );
-
-  useEffect(() => {
-    if (selectedLocation) {
-      const latest = [...selectedLocation.orderLists].sort(
-        (a, b) => b.id - a.id,
-      )[0];
-      setSelectedListId(latest?.id || null);
-    }
-  }, [selectedLocation]);
 
   const handleReset = () => {
     setAppData(initialData);
-    setSelectedLocationId(initialData.locations[0]?.id || null);
-    setSelectedListId(null);
   };
 
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-2xl mx-auto space-y-8">
-        <div className="text-center space-y-2 ">
+        <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold">Restaurant Inventory</h1>
-          <p className="text-lg">Choose a location to start</p>
+          <p className="text-lg">Your default location and list</p>
         </div>
 
-        <div className="rounded-2xl p-6 shadow-lg border border-border">
-          <label className="block text-sm font-semibold mb-3">
-            Select Location
-          </label>
-          <div className="relative">
-            <select
-              value={selectedLocationId ?? ""}
-              onChange={(e) => setSelectedLocationId(Number(e.target.value))}
-              className="w-full px-6 py-4 rounded-xl bg-background border-2 border-border appearance-none focus:outline-none focus:border-border text-lg font-medium shadow-sm
-                       hover:border-primary/50 transition-colors"
+        {!selectedLocation || !selectedList ? (
+          <div className="rounded-2xl p-6 shadow-lg border border-border text-center">
+            <p className="text-gray-600">
+              No default location or stock list set. Please go to your{" "}
+              <strong>Dashboard</strong> and set one.
+            </p>
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-logo"
             >
-              {appData.locations.map((location) => (
-                <option
-                  key={location.id}
-                  value={location.id}
-                  className="bg-background"
-                >
-                  📍 {location.name}
-                </option>
-              ))}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </div>
+              Go to Dashboard
+            </button>
           </div>
-        </div>
-
-        {/* {selectedLocation && (
-          <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
-            <label className="block text-sm font-semibold text-card-foreground mb-3">
-              Select Stock List
-            </label>
-            <div className="relative">
-              <select
-                value={selectedListId ?? ""}
-                onChange={(e) => setSelectedListId(Number(e.target.value))}
-                className="w-full px-6 py-4 rounded-xl bg-background border-2 border-border
-                         appearance-none focus:outline-none focus:border-primary
-                         text-foreground text-lg font-medium shadow-sm
-                         hover:border-primary/50 transition-colors"
-              >
-                {selectedLocation.orderLists.map((list) => (
-                  <option
-                    key={list.id}
-                    value={list.id}
-                    className="text-foreground bg-background"
-                  >
-                    📋 {list.name}
-                  </option>
-                ))}
-              </select>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
-                <svg
-                  className="w-5 h-5 text-muted-foreground"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-        )} */}
-
-        {selectedList && (
+        ) : (
           <div className="rounded-2xl p-8 shadow-lg border border-border">
             <div className="text-center space-y-6">
               <div className="space-y-2">
                 <h3 className="text-xl font-bold">Ready to Order</h3>
-                <p className="">
-                  Current List:{" "}
+                <p>
+                  Location:{" "}
+                  <span className="font-semibold">{selectedLocation.name}</span>
+                </p>
+                <p>
+                  Stock List:{" "}
                   <span className="font-semibold">{selectedList.name}</span>
                 </p>
               </div>
@@ -146,7 +64,7 @@ const Home = () => {
                            shadow-xl hover:scale-105 transition-all duration-300 ease-out bg-primary hover:bg-primary/60
                            border-4 border-black"
                 >
-                  <div className="relative flex flex-col items-center justify-center space-y-2 border-border">
+                  <div className="relative flex flex-col items-center justify-center space-y-2">
                     <svg
                       className="w-8 h-8"
                       fill="none"
@@ -168,6 +86,7 @@ const Home = () => {
           </div>
         )}
 
+        {/* Previous Orders */}
         <div className="bg-card rounded-2xl p-6 shadow-lg border border-border">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-xl font-bold flex items-center gap-2">

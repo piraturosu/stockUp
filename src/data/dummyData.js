@@ -74,4 +74,6 @@ export const initialData = {
       ],
     },
   ],
+  defaultLocation: null,
+  defaultListId: null,
 };
